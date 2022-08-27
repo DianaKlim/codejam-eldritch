@@ -1,8 +1,8 @@
 // import Ancients from '/eldritch-codejam/assets/Ancients/Ancients.js';
-import cardsData from '/eldritch-codejam/data/mythicCards/blue/index.js';
-import cardsDataBrown from '/eldritch-codejam/data/mythicCards/brown/index.js';
-import cardsDataGreen from '/eldritch-codejam/data/mythicCards/green/index.js';
-import ancientsData from '/eldritch-codejam/data/ancients.js';
+import cardsData from './data/mythicCards/blue/index.js';
+import cardsDataBrown from './data/mythicCards/brown/index.js';
+import cardsDataGreen from './data/mythicCards/green/index.js';
+import ancientsData from './data/ancients.js';
 
 
 const azathoth = document.querySelector('.azathoth');
@@ -108,7 +108,7 @@ levelsContainer.addEventListener('click', e => {
             deckContainer.style.visibility = 'visible';
             dictForActualCard = easyDifficulty()
             count = 0;
-            actualCard.style.backgroundImage = `url('/eldritch-codejam/assets/mythicCardBackground.png')`;
+            actualCard.style.backgroundImage = `url('./assets/mythicCardBackground.png')`;
         })
     }
 
@@ -127,7 +127,7 @@ levelsContainer.addEventListener('click', e => {
             deckContainer.style.visibility = 'visible';
             dictForActualCard = normalDifficulty()
             count = 0;
-            actualCard.style.backgroundImage = `url('/eldritch-codejam/assets/mythicCardBackground.png')`;
+            actualCard.style.backgroundImage = `url('./assets/mythicCardBackground.png')`;
         })
     }
 
@@ -146,7 +146,7 @@ levelsContainer.addEventListener('click', e => {
             deckContainer.style.visibility = 'visible';
             dictForActualCard = hardDifficulty()
             count = 0;
-            actualCard.style.backgroundImage = `url('/eldritch-codejam/assets/mythicCardBackground.png')`;
+            actualCard.style.backgroundImage = `url('./assets/mythicCardBackground.png')`;
         })
     }
 
