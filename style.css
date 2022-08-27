@@ -1,0 +1,163 @@
+body {
+    margin: 0;
+    font-size: 30px;
+}
+.App {
+    background-image: url("/eldritch-codejam/assets/home.png");
+    background-position: 50%;
+    background-repeat: no-repeat;
+    background-size: cover;
+    display: flex;
+    gap: 20px;
+    height: 100vh;
+    justify-content: space-between;
+    width: 100vw;
+}   
+
+.ancients {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    gap: 10px;
+    min-width: 40%;
+    padding: 20px;
+}
+
+.azathoth {
+    background-image: url('./assets/Ancients/Azathoth.png');
+}
+
+.cthulhu {
+    background-image: url('./assets/Ancients/Cthulthu.png');
+}
+
+.iogSothoth {
+    background-image: url('./assets/Ancients/IogSothoth.png');
+}
+
+.shubNiggurath{
+    background-image: url('./assets/Ancients/ShubNiggurath.png');
+}
+
+.ancient-card, .actual-card {
+    background-position: 50%;
+    background-repeat: no-repeat;
+    background-size: contain;
+    box-sizing: border-box;
+    cursor: pointer;
+    /* height: 260px;
+    width: 200px; */
+    height: 350px;
+    width: 275px;
+    /* background-image: url('./assets/Ancients/Azathoth.png'); */
+}
+
+.card-active {
+    border: solid 2px red;
+}
+
+.levels {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    height: 100vh;
+    justify-content: center;
+    width: 188px;
+    visibility: hidden;
+}
+
+.level-game, .knead-button {
+margin: 9px;
+padding: 14px;
+text-align: center;
+background: #E4D3CB;
+opacity: 0.9;
+border-radius: 24px;
+cursor: pointer;
+}
+
+.level-game:hover, .knead-button:hover {
+    transition: 0.3s;
+    background: #f48055;
+}
+
+.knead-button {
+    height: 62px;
+    width: 178px;
+    margin-top: 549px;
+    margin-left: 157px;
+    display: flex;
+    align-items: center;
+    border: solid #ffa9ef;
+    visibility: hidden;
+}
+
+.bg-active {
+    background: #ff5a4d
+}
+
+.actual-card {
+    background-size: cover;
+    background-image: url(./assets/mythicCardBackground.png);
+    /* height: 190px;
+    width: 130px; */
+}
+
+.deck-container, .current-state {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    justify-content: center;
+    min-width: 30%;
+}
+
+.current-state {
+display: flex;
+flex-direction: column;
+gap: 10px;
+min-height: 30%;
+}
+
+.deck-container .current-state .stage-container {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.deck-container .current-state .stage-container .stage-text {
+    color: white;
+}
+
+.deck-container .current-state .stage-container .dots-container {
+    align-items: center;
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+}
+
+.deck-container {
+visibility: hidden;
+}
+
+.dot {
+    height: 40px;
+    width: 40px;
+    border-radius: 50%;
+    font-size: 35px;
+    display: flex;
+    justify-content: center;
+}
+
+.green {
+    background: rgb(79, 171, 30);
+}
+
+.brown {
+    background: rgb(166, 105, 30);
+}
+
+.blue {
+    background: rgb(119, 189, 255);
+}
