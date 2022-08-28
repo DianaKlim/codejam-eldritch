@@ -18,10 +18,10 @@ body {
 .ancients {
     /* display: flex; */
     /* flex-direction: column; */
-    flex-wrap: wrap;
+    /* flex-wrap: wrap; */
     /* gap: 10px; */
-    min-width: 499px;
-    padding-top: 124px;
+    min-width: 497px;
+    padding-top: 156px;
 }
 
 .azathoth {
@@ -63,10 +63,10 @@ body {
 .levels {
     display: flex;
     flex-direction: column;
-    gap: 20px;
-    height: 100vh;
+    gap: 10px;
+    height: 99vh;
     justify-content: center;
-    width: 188px;
+    width: 174px;
     visibility: hidden;
 }
 
@@ -88,8 +88,8 @@ cursor: pointer;
 .knead-button {
     height: 62px;
     width: 178px;
-    margin-top: 473px;
-    margin-left: 44px;
+    margin-top: 449px;
+    /* margin-left: 44px; */
     display: flex;
     align-items: center;
     border: solid #ffa9ef;
@@ -113,7 +113,7 @@ cursor: pointer;
     flex-direction: column;
     gap: 20px;
     justify-content: center;
-    min-width: 34%;
+    min-width: 30%;
 }
 
 .current-state {
