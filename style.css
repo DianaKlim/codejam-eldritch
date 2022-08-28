@@ -15,12 +15,12 @@ body {
 }   
 
 .ancients {
-    display: flex;
-    flex-direction: column;
+    /* display: flex; */
+    /* flex-direction: column; */
     flex-wrap: wrap;
-    gap: 10px;
-    min-width: 40%;
-    padding: 20px;
+    /* gap: 10px; */
+    min-width: 499px;
+    padding-top: 124px;
 }
 
 .azathoth {
@@ -48,12 +48,15 @@ body {
     /* height: 260px;
     width: 200px; */
     height: 350px;
-    width: 275px;
+    /* width: 275px; */
+    float: left;
+    width: 50%;
+    padding: 95px;
     /* background-image: url('./assets/Ancients/Azathoth.png'); */
 }
 
 .card-active {
-    border: solid 2px red;
+    border: solid 2px #e9564b;
 }
 
 .levels {
@@ -84,8 +87,8 @@ cursor: pointer;
 .knead-button {
     height: 62px;
     width: 178px;
-    margin-top: 549px;
-    margin-left: 157px;
+    margin-top: 473px;
+    margin-left: 44px;
     display: flex;
     align-items: center;
     border: solid #ffa9ef;
@@ -97,7 +100,7 @@ cursor: pointer;
 }
 
 .actual-card {
-    background-size: cover;
+    /* background-size: cover; */
     background-image: url(./assets/mythicCardBackground.png);
     /* height: 190px;
     width: 130px; */
@@ -109,7 +112,7 @@ cursor: pointer;
     flex-direction: column;
     gap: 20px;
     justify-content: center;
-    min-width: 30%;
+    min-width: 34%;
 }
 
 .current-state {
@@ -160,4 +163,23 @@ visibility: hidden;
 
 .blue {
     background: rgb(119, 189, 255);
+}
+
+.text-rules {
+    display: flex;
+    flex-wrap: wrap;
+    color: #d0c0b9;
+    font-size: 23px;
+    font-style: oblique;
+    padding: 37px;
+    background: #282a2a;
+}
+
+.text {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    color: #000000;
+    background: #ddcdc1;
+
 }

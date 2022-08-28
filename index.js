@@ -99,6 +99,7 @@ levelsContainer.addEventListener('click', e => {
         hardLevel.classList.remove('bg-active')
         veryLightLevel.classList.remove('bg-active')
         veryHardLevel.classList.remove('bg-active')
+        deckContainer.style.visibility = 'hidden';
 
         //-------------------------------- клик на замешать колоду в легком уровне -------
 
@@ -121,6 +122,8 @@ levelsContainer.addEventListener('click', e => {
         hardLevel.classList.remove('bg-active')
         veryLightLevel.classList.remove('bg-active')
         veryHardLevel.classList.remove('bg-active')
+        deckContainer.style.visibility = 'hidden';
+
         //-------------------------------- клик на замешать колоду в среднем уровне -------
 
         kneadButton.addEventListener('click', e => {
@@ -140,6 +143,8 @@ levelsContainer.addEventListener('click', e => {
         hardLevel.classList.add('bg-active')
         veryLightLevel.classList.remove('bg-active')
         veryHardLevel.classList.remove('bg-active')
+        deckContainer.style.visibility = 'hidden';
+
         //-------------------------------- клик на замешать колоду в среднем уровне -------
 
         kneadButton.addEventListener('click', e => {
@@ -148,6 +153,49 @@ levelsContainer.addEventListener('click', e => {
             count = 0;
             actualCard.style.backgroundImage = `url('./assets/mythicCardBackground.png')`;
         })
+    }
+
+    // -----------------------------------------клик очень легкий уроыень ------------------
+
+
+    if (e.target.className === 'level-game very-light') {
+        lightLevel.classList.remove('bg-active')
+        averageLevel.classList.remove('bg-active')
+        hardLevel.classList.remove('bg-active')
+        veryLightLevel.classList.add('bg-active')
+        veryHardLevel.classList.remove('bg-active')
+        deckContainer.style.visibility = 'hidden';
+
+        // -------------------------------- клик на замешать колоду в очень легком уровне -------
+
+        kneadButton.addEventListener('click', e => {
+            deckContainer.style.visibility = 'visible';
+            dictForActualCard = veryEasyDifficulty (ancientsDat)
+            count = 0;
+            actualCard.style.backgroundImage = `url('./assets/mythicCardBackground.png')`;
+        })
+    }
+
+    // -----------------------------------------клик очень тяжелый уроыень ------------------
+
+
+    if (e.target.className === 'level-game very-higth') {
+        lightLevel.classList.remove('bg-active')
+        averageLevel.classList.remove('bg-active')
+        hardLevel.classList.remove('bg-active')
+        veryLightLevel.classList.remove('bg-active')
+        veryHardLevel.classList.add('bg-active')
+        deckContainer.style.visibility = 'hidden';
+
+        // -------------------------------- клик на замешать колоду в очень тяжелом уровне -------
+
+        kneadButton.addEventListener('click', e => {
+            deckContainer.style.visibility = 'visible';
+            dictForActualCard = veryHardDifficulty (ancientsDat)
+            count = 0;
+            actualCard.style.backgroundImage = `url('./assets/mythicCardBackground.png')`;
+        })
+
     }
 
 kneadButton.style.visibility = 'visible';
@@ -378,12 +426,31 @@ function normalDifficulty () {
 
 
 
+
 //---------------------------------- CHOOSE CARDS very easy-------------------------
 
 function chooseCardsVeryEasy (cards, dict) {
+
     const arr = sortByLevel (cards, 'easy');
+    console.log('arr', arr)
+
+    const addCards = chooseCardsNormalForVeryEasyDifficult (cards)
+    console.log ('addCards', chooseCardsNormalForVeryEasyDifficult(cards))
+
+    const sum = dict.firstStage + dict.secondStage + dict.thirdStage;  // сумма всех карт этого цвета из всех стейджов
+    console.log('sum', sum)
+
+    if (arr.length < sum) {
+        let i = 0;
+        while (i = sum - arr.length)
+        arr.push(addCards[i])
+        i++
+    }
+    console.log('arr', arr)
+
+
     const shuffledArr = shuffle(arr);
-    const sum = dict.firstStage + dict.secondStage + dict.thirdStage;  // сумма всех карт их всех стейджов
+
     const sliceArr = shuffledArr.slice(0, sum)
     const dictionary = {}
     dictionary['firstStage'] = sliceArr.slice(0, dict.firstStage)
@@ -412,9 +479,6 @@ function veryEasyDifficulty (ancientsDat) {
     const chooseGreen = chooseCardsVeryEasy (cardsDataGreen, dictGreen);
     const chooseBrown = chooseCardsVeryEasy (cardsDataBrown, dictBrown);
     const chooseBlue = chooseCardsVeryEasy (cardsData, dictBlue);
-    
-    console.log('chooseCardsNormalForVeryEasyDifficult ((cardsDataGreen, dictGreen)', chooseCardsNormalForVeryEasyDifficult ((cardsDataGreen)))
-
 
     const firstStage = [...chooseGreen.firstStage, ...chooseBrown.firstStage, ...chooseBlue.firstStage];
     const secondStage = [...chooseGreen.secondStage, ...chooseBrown.secondStage, ...chooseBlue.secondStage];
@@ -427,6 +491,61 @@ function veryEasyDifficulty (ancientsDat) {
     return [...shuffleFirstStage, ...shuffleSecondStage, ...shuffleThirdStage ]
 }
 
-// console.log(veryEasyDifficulty())
+
+
+
+//---------------------------------- CHOOSE CARDS very hard-------------------------
+
+function chooseCardsVeryHard (cards, dict) {
+
+    const arr = sortByLevel (cards, 'hard');
+    const addCards = chooseCardsNormalForVeryHardDifficult (cards)
+    const sum = dict.firstStage + dict.secondStage + dict.thirdStage;  // сумма всех карт этого цвета из всех стейджов
+    
+    if (arr.length < sum) {
+        let i = 0;
+        while (i = sum - arr.length)
+        arr.push(addCards[i])
+        i++
+    }
+
+    const shuffledArr = shuffle(arr);
+    const sliceArr = shuffledArr.slice(0, sum)
+    const dictionary = {}
+    dictionary['firstStage'] = sliceArr.slice(0, dict.firstStage)
+    dictionary['secondStage'] = sliceArr.slice(dict.firstStage, dict.firstStage + dict.secondStage)
+    dictionary['thirdStage'] = sliceArr.slice(dict.firstStage + dict.secondStage)
+    
+    return dictionary
+}
+
+//---------------------------------- ADD NORMAL CARD very hard-------------------------
+
+function chooseCardsNormalForVeryHardDifficult (cards) {
+    const arr = sortByLevel (cards, 'normal');
+    const shuffledArr = shuffle(arr);
+    return shuffledArr
+}
+
+//---------------------------------- VERY HARD DIFFICULTY -------------------------
+
+function veryHardDifficulty (ancientsDat) {
+    const dictGreen = cardsColorAncient (ancientsDat, 'green')
+    const dictBrown = cardsColorAncient (ancientsDat, 'brown')
+    const dictBlue = cardsColorAncient (ancientsDat, 'blue');
+    const chooseGreen = chooseCardsVeryHard (cardsDataGreen, dictGreen);
+    const chooseBrown = chooseCardsVeryHard (cardsDataBrown, dictBrown);
+    const chooseBlue = chooseCardsVeryHard (cardsData, dictBlue);
+
+    const firstStage = [...chooseGreen.firstStage, ...chooseBrown.firstStage, ...chooseBlue.firstStage];
+    const secondStage = [...chooseGreen.secondStage, ...chooseBrown.secondStage, ...chooseBlue.secondStage];
+    const thirdStage = [...chooseGreen.thirdStage, ...chooseBrown.thirdStage, ...chooseBlue.thirdStage]
+    
+    const shuffleFirstStage = shuffle (firstStage);
+    const shuffleSecondStage = shuffle (secondStage);
+    const shuffleThirdStage = shuffle (thirdStage);
+
+    return [...shuffleFirstStage, ...shuffleSecondStage, ...shuffleThirdStage ]
+}
 
 
