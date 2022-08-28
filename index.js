@@ -1,4 +1,3 @@
-// import Ancients from '/eldritch-codejam/assets/Ancients/Ancients.js';
 import cardsData from './data/mythicCards/blue/index.js';
 import cardsDataBrown from './data/mythicCards/brown/index.js';
 import cardsDataGreen from './data/mythicCards/green/index.js';
@@ -44,45 +43,45 @@ function fillDots(ancient) {
     thirdStage[2].textContent = ancient.thirdStage.blue;
 }
 
-
  
 //-------------------------------- КЛИК НА ДРЕВНЕГО -----------------------------------
 
 ancientsContainer.addEventListener('click', e => {
     kneadButton.style.visibility = 'hidden';
-    deckContainer.style.visibility = 'hidden'
+    deckContainer.style.visibility = 'hidden';
 
     if (e.target.className === 'ancient-card azathoth') {
         ancientsDat = ancientsData[0];
-        fillDots(ancientsData[0])
-        azathoth.classList.add('card-active')
-        cthulhu.classList.remove('card-active')
-        iogSothoth.classList.remove('card-active')
-        shubNiggurath.classList.remove('card-active')
+        fillDots(ancientsData[0]);
+        // activeCardAncient(ancientsData[0]['id']);
+        azathoth.classList.add('card-active');
+        cthulhu.classList.remove('card-active');
+        iogSothoth.classList.remove('card-active');
+        shubNiggurath.classList.remove('card-active');
     }
     else if (e.target.className === 'ancient-card cthulhu') {
         ancientsDat = ancientsData[1];
-        fillDots(ancientsData[1])
-        cthulhu.classList.add('card-active')
-        azathoth.classList.remove('card-active')
-        iogSothoth.classList.remove('card-active')
-        shubNiggurath.classList.remove('card-active')
+        fillDots(ancientsData[1]);
+        cthulhu.classList.add('card-active');
+        azathoth.classList.remove('card-active');
+        iogSothoth.classList.remove('card-active');
+        shubNiggurath.classList.remove('card-active');
     }
     else if (e.target.className === 'ancient-card iogSothoth') {
         ancientsDat = ancientsData[2];
         fillDots(ancientsData[2])
-        azathoth.classList.remove('card-active')
-        cthulhu.classList.remove('card-active')
-        shubNiggurath.classList.remove('card-active')
-        iogSothoth.classList.add('card-active')
+        azathoth.classList.remove('card-active');
+        cthulhu.classList.remove('card-active');
+        shubNiggurath.classList.remove('card-active');
+        iogSothoth.classList.add('card-active');
     }
     else if (e.target.className === 'ancient-card shubNiggurath') {
         ancientsDat = ancientsData[3];
         fillDots(ancientsData[3])
-        shubNiggurath.classList.add('card-active')
-        azathoth.classList.remove('card-active')
-        cthulhu.classList.remove('card-active')
-        iogSothoth.classList.remove('card-active')
+        shubNiggurath.classList.add('card-active');
+        azathoth.classList.remove('card-active');
+        cthulhu.classList.remove('card-active');
+        iogSothoth.classList.remove('card-active');
     }
     levelsContainer.style.visibility = 'visible'
 
@@ -265,21 +264,17 @@ function sortByLevel (cards, difficulty) {
 }
 
 
-//---------------------------------- Перемешивающая функция -------------------------
+//---------------------------------- shuffle function -------------------------
 
 
-function shuffle (cards) {                                      // num - кол-во всех карточек одного цвета у древнего,   all  -  все существующие карточки в игре
-    const arr = Array(cards.length).fill().map((e, i) => i + 0);  // массив от 0 
-    const shuffleArr = arr.sort(() => Math.random() - 0.5);       // отсортировала
-    let array = [];
-    shuffleArr.forEach(el => {
-        array.push(cards[el])
-    })
-    return array                                            // вывожу num-рандомных чисел
+function shuffle (cards) {
+    const shuffleArr = cards.sort(() => Math.random() - 0.5);
+    console.log(' shuffleArr', shuffleArr)
+    return shuffleArr
 }
 
 
-//---------------------------------- Функция, возвращающая словарь стейдж: кол-во карт цвета  -------------------------
+//---------------------------------- Функция, возвращающая словарь 'стейдж: кол-во карт цвета'  -------------------------
 
 function cardsColorAncient (ancient, color) {
     const dict = {}
@@ -289,13 +284,9 @@ function cardsColorAncient (ancient, color) {
     return dict
 }
 
+//-------------------------- CHOOSE CARDS easy normal hard level -----------------
 
-
-
-//---------------------------------- CHOOSE CARDS easy -------------------------
-
-function chooseCards (cards, dict) {
-    const arr = [...sortByLevel (cards, 'easy'), ...sortByLevel (cards, 'normal')]
+function dictionaryEasyNormalHard (arr, dict) {
     const shuffledArr = shuffle(arr);
     const sum = dict.firstStage + dict.secondStage + dict.thirdStage;
     const sliceArr = shuffledArr.slice(0, sum)
@@ -303,205 +294,113 @@ function chooseCards (cards, dict) {
     dictionary['firstStage'] = sliceArr.slice(0, dict.firstStage)
     dictionary['secondStage'] = sliceArr.slice(dict.firstStage, dict.firstStage + dict.secondStage)
     dictionary['thirdStage'] = sliceArr.slice(dict.firstStage + dict.secondStage)
-    // console.log('sliceArr', sliceArr)
-    // console.log( 'dictionary', dictionary)
     return dictionary
 }
+
+
+//---------------------------- deck of ancient -----------------------------------
+
+function dictColor() {
+    const dictGreen = cardsColorAncient (ancientsDat, 'green')
+    const dictBrown = cardsColorAncient (ancientsDat, 'brown')
+    const dictBlue = cardsColorAncient (ancientsDat, 'blue');
+    return [dictGreen, dictBrown, dictBlue]
+}
+
+//---------------------- sort colors by stages (Easy Normal Hard level)-------------------------------------
+
+function sortColorsByStages (arrGreen, arrBrown, arrBlue, dictColors) {
+    const chooseGreen = dictionaryEasyNormalHard (arrGreen, dictColors[0]);
+    const chooseBrown = dictionaryEasyNormalHard (arrBrown, dictColors[1]);
+    const chooseBlue = dictionaryEasyNormalHard (arrBlue, dictColors[2]);
+   return shuffleFunc (chooseGreen, chooseBrown, chooseBlue)
+}
+
+// -------------------------------shuffle -------------------------------------------------
+function shuffleFunc (chooseGreen, chooseBrown, chooseBlue) {
+    const firstStage = [...chooseGreen.firstStage, ...chooseBrown.firstStage, ...chooseBlue.firstStage];
+    const secondStage = [...chooseGreen.secondStage, ...chooseBrown.secondStage, ...chooseBlue.secondStage];
+    const thirdStage = [...chooseGreen.thirdStage, ...chooseBrown.thirdStage, ...chooseBlue.thirdStage]
+
+    const shuffleFirstStage = shuffle (firstStage);
+    const shuffleSecondStage = shuffle (secondStage);
+    const shuffleThirdStage = shuffle (thirdStage);
+
+    console.log('deck', [...shuffleFirstStage, ...shuffleSecondStage, ...shuffleThirdStage ])
+    return [...shuffleFirstStage, ...shuffleSecondStage, ...shuffleThirdStage ]
+}
+
 
 //---------------------------------- EASY DIFFICULTY -------------------------
 
 function easyDifficulty () {
-    const dictGreen = cardsColorAncient (ancientsDat, 'green')
-    const dictBrown = cardsColorAncient (ancientsDat, 'brown')
-    const dictBlue = cardsColorAncient (ancientsDat, 'blue');
-    const chooseGreen = chooseCards (cardsDataGreen, dictGreen);
-    const chooseBrown = chooseCards (cardsDataBrown, dictBrown);
-    const chooseBlue = chooseCards (cardsData, dictBlue);
-
-    // console.log('chooseGreen', chooseGreen.firstStage)
-    // console.log('chooseBrown', chooseBrown)
-    // console.log('chooseBlue', chooseBlue)
-
-    const firstStage = [...chooseGreen.firstStage, ...chooseBrown.firstStage, ...chooseBlue.firstStage];
-    const secondStage = [...chooseGreen.secondStage, ...chooseBrown.secondStage, ...chooseBlue.secondStage];
-    const thirdStage = [...chooseGreen.thirdStage, ...chooseBrown.thirdStage, ...chooseBlue.thirdStage]
-
-    // console.log('firstStage', firstStage)
-    // console.log('secondStage', secondStage)
-    // console.log('thirdStage', thirdStage)
-
-    const shuffleFirstStage = shuffle (firstStage);
-    const shuffleSecondStage = shuffle (secondStage);
-    const shuffleThirdStage = shuffle (thirdStage);
-
-    // console.log('shuffleFirstStage', shuffleFirstStage)
-    // console.log('shuffleSecondStage', shuffleSecondStage)
-    // console.log('shuffleThirdStage', shuffleThirdStage)
-
-    console.log('deck', [...shuffleFirstStage, ...shuffleSecondStage, ...shuffleThirdStage ])
-
-    return [...shuffleFirstStage, ...shuffleSecondStage, ...shuffleThirdStage ]
-
-
+    const dictColors = dictColor()
+    const arrGreen = [...sortByLevel (cardsDataGreen, 'easy'), ...sortByLevel (cardsDataGreen, 'normal')]
+    const arrBrown = [...sortByLevel (cardsDataBrown, 'easy'), ...sortByLevel (cardsDataBrown, 'normal')]
+    const arrBlue = [...sortByLevel (cardsData, 'easy'), ...sortByLevel (cardsData, 'normal')]
+    return sortColorsByStages (arrGreen, arrBrown, arrBlue, dictColors)
 }
 
-
-
-
-//---------------------------------- CHOOSE CARDS hard-------------------------
-
-function chooseCardsHard (cards, dict) {
-    const arr = [...sortByLevel (cards, 'hard'), ...sortByLevel (cards, 'normal')]
-    const shuffledArr = shuffle(arr);
-    const sum = dict.firstStage + dict.secondStage + dict.thirdStage;
-    const sliceArr = shuffledArr.slice(0, sum)
-    const dictionary = {}
-    dictionary['firstStage'] = sliceArr.slice(0, dict.firstStage)
-    dictionary['secondStage'] = sliceArr.slice(dict.firstStage, dict.firstStage + dict.secondStage)
-    dictionary['thirdStage'] = sliceArr.slice(dict.firstStage + dict.secondStage)
-    return dictionary
-}
 
 //---------------------------------- HARD DIFFICULTY -------------------------
 
 function hardDifficulty () {
-    const dictGreen = cardsColorAncient (ancientsDat, 'green')
-    const dictBrown = cardsColorAncient (ancientsDat, 'brown')
-    const dictBlue = cardsColorAncient (ancientsDat, 'blue');
-    const chooseGreen = chooseCardsHard (cardsDataGreen, dictGreen);
-    const chooseBrown = chooseCardsHard (cardsDataBrown, dictBrown);
-    const chooseBlue = chooseCardsHard (cardsData, dictBlue);
-
-    const firstStage = [...chooseGreen.firstStage, ...chooseBrown.firstStage, ...chooseBlue.firstStage];
-    const secondStage = [...chooseGreen.secondStage, ...chooseBrown.secondStage, ...chooseBlue.secondStage];
-    const thirdStage = [...chooseGreen.thirdStage, ...chooseBrown.thirdStage, ...chooseBlue.thirdStage]
-
-    const shuffleFirstStage = shuffle (firstStage);
-    const shuffleSecondStage = shuffle (secondStage);
-    const shuffleThirdStage = shuffle (thirdStage);
-
-    console.log('deck', [...shuffleFirstStage, ...shuffleSecondStage, ...shuffleThirdStage ])
-    return [...shuffleFirstStage, ...shuffleSecondStage, ...shuffleThirdStage ]
+    const dictColors = dictColor()
+    const arrGreen = [...sortByLevel (cardsDataGreen, 'hard'), ...sortByLevel (cardsDataGreen, 'normal')]
+    const arrBrown = [...sortByLevel (cardsDataBrown, 'hard'), ...sortByLevel (cardsDataBrown, 'normal')]
+    const arrBlue = [...sortByLevel (cardsData, 'hard'), ...sortByLevel (cardsData, 'normal')]
+    return sortColorsByStages (arrGreen, arrBrown, arrBlue, dictColors)
 }
 
-
-
-
-//---------------------------------- CHOOSE CARDS normal-------------------------
-
-function chooseCardsNormal (cards, dict) {
-    const arr = [...sortByLevel (cards, 'hard'), ...sortByLevel (cards, 'normal'), ...sortByLevel (cards, 'easy')]
-    const shuffledArr = shuffle(arr);
-    const sum = dict.firstStage + dict.secondStage + dict.thirdStage;
-    const sliceArr = shuffledArr.slice(0, sum)
-    const dictionary = {}
-    dictionary['firstStage'] = sliceArr.slice(0, dict.firstStage)
-    dictionary['secondStage'] = sliceArr.slice(dict.firstStage, dict.firstStage + dict.secondStage)
-    dictionary['thirdStage'] = sliceArr.slice(dict.firstStage + dict.secondStage)
-    return dictionary
-}
 
 //---------------------------------- NORMAL DIFFICULTY -------------------------
 
 function normalDifficulty () {
-    const dictGreen = cardsColorAncient (ancientsDat, 'green')
-    const dictBrown = cardsColorAncient (ancientsDat, 'brown')
-    const dictBlue = cardsColorAncient (ancientsDat, 'blue');
-    const chooseGreen = chooseCardsNormal (cardsDataGreen, dictGreen);
-    const chooseBrown = chooseCardsNormal (cardsDataBrown, dictBrown);
-    const chooseBlue = chooseCardsNormal (cardsData, dictBlue);
-
-    const firstStage = [...chooseGreen.firstStage, ...chooseBrown.firstStage, ...chooseBlue.firstStage];
-    const secondStage = [...chooseGreen.secondStage, ...chooseBrown.secondStage, ...chooseBlue.secondStage];
-    const thirdStage = [...chooseGreen.thirdStage, ...chooseBrown.thirdStage, ...chooseBlue.thirdStage]
-
-    const shuffleFirstStage = shuffle (firstStage);
-    const shuffleSecondStage = shuffle (secondStage);
-    const shuffleThirdStage = shuffle (thirdStage);
-
-    console.log('deck', [...shuffleFirstStage, ...shuffleSecondStage, ...shuffleThirdStage ])
-    return [...shuffleFirstStage, ...shuffleSecondStage, ...shuffleThirdStage ]
-}
-
-
-
-
-
-//---------------------------------- CHOOSE CARDS very easy-------------------------
-
-function chooseCardsVeryEasy (cards, dict) {
-
-    const arr = sortByLevel (cards, 'easy');
-    console.log('arr', arr)
-
-    const addCards = chooseCardsNormalForVeryEasyDifficult (cards)
-    console.log ('addCards', chooseCardsNormalForVeryEasyDifficult(cards))
-
-    const sum = dict.firstStage + dict.secondStage + dict.thirdStage;  // сумма всех карт этого цвета из всех стейджов
-    console.log('sum', sum)
-
-    if (arr.length < sum) {
-        let i = 0;
-        while (i = sum - arr.length)
-        arr.push(addCards[i])
-        i++
-    }
-    console.log('arr', arr)
-
-
-    const shuffledArr = shuffle(arr);
-
-    const sliceArr = shuffledArr.slice(0, sum)
-    const dictionary = {}
-    dictionary['firstStage'] = sliceArr.slice(0, dict.firstStage)
-    dictionary['secondStage'] = sliceArr.slice(dict.firstStage, dict.firstStage + dict.secondStage)
-    dictionary['thirdStage'] = sliceArr.slice(dict.firstStage + dict.secondStage)
-
-    console.log( 'dictionary', dictionary)
-    
-    return dictionary
-}
-
-//---------------------------------- ADD NORMAL CARD very easy-------------------------
-
-function chooseCardsNormalForVeryEasyDifficult (cards) {
-    const arr = sortByLevel (cards, 'normal');
-    const shuffledArr = shuffle(arr);
-    return shuffledArr
+    const dictColors = dictColor()
+    const arrGreen = [...sortByLevel (cardsDataGreen, 'hard'), ...sortByLevel (cardsDataGreen, 'normal'), ...sortByLevel (cardsDataGreen, 'easy')]
+    const arrBrown = [...sortByLevel (cardsDataBrown, 'hard'), ...sortByLevel (cardsDataBrown, 'normal'), ...sortByLevel (cardsDataBrown, 'easy')]
+    const arrBlue = [...sortByLevel (cardsData, 'hard'), ...sortByLevel (cardsData, 'normal'), ...sortByLevel (cardsData, 'easy')]
+    return sortColorsByStages (arrGreen, arrBrown, arrBlue, dictColors)
 }
 
 //---------------------------------- VERY EASY DIFFICULTY -------------------------
 
-function veryEasyDifficulty (ancientsDat) {
-    const dictGreen = cardsColorAncient (ancientsDat, 'green')
-    const dictBrown = cardsColorAncient (ancientsDat, 'brown')
-    const dictBlue = cardsColorAncient (ancientsDat, 'blue');
-    const chooseGreen = chooseCardsVeryEasy (cardsDataGreen, dictGreen);
-    const chooseBrown = chooseCardsVeryEasy (cardsDataBrown, dictBrown);
-    const chooseBlue = chooseCardsVeryEasy (cardsData, dictBlue);
+function veryEasyDifficulty () {
+    const dictColors = dictColor()
+    const chooseGreen = addCardsForVeryEasy (cardsDataGreen, dictColors[0]);
+    const chooseBrown = addCardsForVeryEasy (cardsDataBrown, dictColors[1]);
+    const chooseBlue = addCardsForVeryEasy (cardsData, dictColors[2]);
 
-    const firstStage = [...chooseGreen.firstStage, ...chooseBrown.firstStage, ...chooseBlue.firstStage];
-    const secondStage = [...chooseGreen.secondStage, ...chooseBrown.secondStage, ...chooseBlue.secondStage];
-    const thirdStage = [...chooseGreen.thirdStage, ...chooseBrown.thirdStage, ...chooseBlue.thirdStage]
-    
-    const shuffleFirstStage = shuffle (firstStage);
-    const shuffleSecondStage = shuffle (secondStage);
-    const shuffleThirdStage = shuffle (thirdStage);
+    return shuffleFunc (chooseGreen, chooseBrown, chooseBlue)
+}
 
-    return [...shuffleFirstStage, ...shuffleSecondStage, ...shuffleThirdStage ]
+//---------------------------------- VERY HARD DIFFICULTY -------------------------
+
+function veryHardDifficulty () {
+    const dictColors = dictColor()
+    const chooseGreen = addCardsForVeryHard (cardsDataGreen, dictColors[0]);
+    const chooseBrown = addCardsForVeryHard (cardsDataBrown, dictColors[1]);
+    const chooseBlue = addCardsForVeryHard (cardsData, dictColors[2]);
+
+    return shuffleFunc (chooseGreen, chooseBrown, chooseBlue)
+}
+
+//---------------------------------- add normal card for very easy and very hard levels-------------------------
+
+function addNormalCards (cards) {
+    const arr = sortByLevel (cards, 'normal');
+    const shuffledArr = shuffle(arr);
+    return shuffledArr
 }
 
 
+//---------------------------------- dictionary for Very Easy and Very Hard -------------------------
 
+function dictionaryForVeryLevel(arr, dict, cards){
 
-//---------------------------------- CHOOSE CARDS very hard-------------------------
-
-function chooseCardsVeryHard (cards, dict) {
-
-    const arr = sortByLevel (cards, 'hard');
-    const addCards = chooseCardsNormalForVeryHardDifficult (cards)
+    const addCards = addNormalCards (cards)
     const sum = dict.firstStage + dict.secondStage + dict.thirdStage;  // сумма всех карт этого цвета из всех стейджов
-    
+
     if (arr.length < sum) {
         let i = 0;
         while (i = sum - arr.length)
@@ -517,35 +416,26 @@ function chooseCardsVeryHard (cards, dict) {
     dictionary['thirdStage'] = sliceArr.slice(dict.firstStage + dict.secondStage)
     
     return dictionary
+
 }
 
-//---------------------------------- ADD NORMAL CARD very hard-------------------------
+//---------------------------------- add cards 'easy' for very easy lvel-------------------------
 
-function chooseCardsNormalForVeryHardDifficult (cards) {
-    const arr = sortByLevel (cards, 'normal');
-    const shuffledArr = shuffle(arr);
-    return shuffledArr
+function addCardsForVeryEasy (cards, dict) {
+
+    const arr = sortByLevel (cards, 'easy');
+    return dictionaryForVeryLevel(arr, dict, cards)
 }
 
-//---------------------------------- VERY HARD DIFFICULTY -------------------------
+//---------------------------------- add cards 'hard' for very hard-------------------------
 
-function veryHardDifficulty (ancientsDat) {
-    const dictGreen = cardsColorAncient (ancientsDat, 'green')
-    const dictBrown = cardsColorAncient (ancientsDat, 'brown')
-    const dictBlue = cardsColorAncient (ancientsDat, 'blue');
-    const chooseGreen = chooseCardsVeryHard (cardsDataGreen, dictGreen);
-    const chooseBrown = chooseCardsVeryHard (cardsDataBrown, dictBrown);
-    const chooseBlue = chooseCardsVeryHard (cardsData, dictBlue);
-
-    const firstStage = [...chooseGreen.firstStage, ...chooseBrown.firstStage, ...chooseBlue.firstStage];
-    const secondStage = [...chooseGreen.secondStage, ...chooseBrown.secondStage, ...chooseBlue.secondStage];
-    const thirdStage = [...chooseGreen.thirdStage, ...chooseBrown.thirdStage, ...chooseBlue.thirdStage]
-    
-    const shuffleFirstStage = shuffle (firstStage);
-    const shuffleSecondStage = shuffle (secondStage);
-    const shuffleThirdStage = shuffle (thirdStage);
-
-    return [...shuffleFirstStage, ...shuffleSecondStage, ...shuffleThirdStage ]
+function addCardsForVeryHard (cards, dict) {
+    const arr = sortByLevel (cards, 'hard');
+    return dictionaryForVeryLevel(arr, dict, cards)
 }
+
+
+
+
 
 
